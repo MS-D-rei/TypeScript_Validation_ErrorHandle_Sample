@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import StyledCard from '@/components/UI/StyledCard';
+import { StyledCardUserInput } from '@/components/UI/StyledCard';
 import styled from 'styled-components';
 import StyledButton from '@/components/UI/StyledButton';
 
@@ -25,17 +25,28 @@ const StyledForm = styled.form`
   }
 `;
 
-function AddUser(props) {
+function AddUser(props: { onNewUserSave: Function }) {
   // Use user object for less state as much as possible.
-  const [enteredUserData, setEnteredUserData] = useState({ id: '', name: '', age: '' });
+  const [enteredUserData, setEnteredUserData] = useState({
+    name: '',
+    age: '',
+  });
 
   const addUserHandler = (event: React.FormEvent) => {
     event.preventDefault();
-    setEnteredUserData((prevState) => ({
-      ...prevState,
-      id: Math.random().toString(),
-    }))
-    console.log(enteredUserData)
+    if (
+      enteredUserData.name.trim().length === 0 ||
+      enteredUserData.age.trim().length === 0
+    ) {
+      return;
+    }
+    if (+enteredUserData.age < 1) {
+      return;
+    }
+    const newUserData = { id: `${Math.random()}`, ...enteredUserData };
+    console.log(newUserData);
+    props.onNewUserSave(newUserData);
+    setEnteredUserData({ name: '', age: '' });
   };
 
   const userNameChangeHandler = (
@@ -55,15 +66,25 @@ function AddUser(props) {
   };
 
   return (
-    <StyledCard>
+    <StyledCardUserInput>
       <StyledForm onSubmit={addUserHandler}>
         <label htmlFor="user-name">Username</label>
-        <input id="user-name" type="text" onChange={userNameChangeHandler} />
+        <input
+          id="user-name"
+          type="text"
+          value={enteredUserData.name}
+          onChange={userNameChangeHandler}
+        />
         <label htmlFor="user-age">Age (years)</label>
-        <input id="user-age" type="text" onChange={userAgeChangeHandler} />
+        <input
+          id="user-age"
+          type="number"
+          value={enteredUserData.age}
+          onChange={userAgeChangeHandler}
+        />
         <StyledButton type="submit">Add User</StyledButton>
       </StyledForm>
-    </StyledCard>
+    </StyledCardUserInput>
   );
 }
 
