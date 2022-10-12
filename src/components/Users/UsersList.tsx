@@ -1,15 +1,33 @@
 import { User } from '@/components/Users/types';
-import { StyledCardUsersList } from '@/components/UI/StyledCard';
+import { StyledCardBase } from '@/components/UI/StyledCard';
+import styled from 'styled-components';
+
+const StyledCardUsersList = styled(StyledCardBase)`
+  margin: 2rem auto;
+  width: 90%;
+  max-width: 40rem;
+`;
+
+const StyledUL = styled.ul`
+  list-style: none;
+  padding: 1rem;
+`;
+
+const StyledLI = styled.li`
+  border: 1px solid #ccc;
+  margin: 0.5rem 0;
+  padding: 0.5rem;
+`;
 
 function UsersList(props: { usersList: User[] }) {
   const usersList = props.usersList;
   const showEachUser = usersList.map((user) => (
-    <li key={user.id}>
+    <StyledLI key={user.id}>
       {user.name}: {user.age} years old
-    </li>
+    </StyledLI>
   ));
 
-  const showContent = <ul>{showEachUser}</ul>;
+  const showContent = <StyledUL>{showEachUser}</StyledUL>;
 
   return <StyledCardUsersList>{showContent}</StyledCardUsersList>;
 }
