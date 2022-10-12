@@ -2,28 +2,7 @@ import React, { useState } from 'react';
 import { StyledCardUserInput } from '@/components/UI/StyledCard';
 import styled from 'styled-components';
 import StyledButton from '@/components/UI/StyledButton';
-
-const StyledForm = styled.form`
-  & label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 0.5rem;
-  }
-
-  & input {
-    font: inherit;
-    display: block;
-    width: 100%;
-    border: 1px solid #ccc;
-    padding: 0.15rem;
-    margin-bottom: 0.5rem;
-  }
-
-  & input:focus {
-    outline: none;
-    border-color: #4f005f;
-  }
-`;
+import ErrorModal from '@/components/UI/ErrorModal';
 
 function AddUser(props: { onNewUserSave: Function }) {
   // Use user object for less state as much as possible.
@@ -66,26 +45,51 @@ function AddUser(props: { onNewUserSave: Function }) {
   };
 
   return (
-    <StyledCardUserInput>
-      <StyledForm onSubmit={addUserHandler}>
-        <label htmlFor="user-name">Username</label>
-        <input
-          id="user-name"
-          type="text"
-          value={enteredUserData.name}
-          onChange={userNameChangeHandler}
-        />
-        <label htmlFor="user-age">Age (years)</label>
-        <input
-          id="user-age"
-          type="number"
-          value={enteredUserData.age}
-          onChange={userAgeChangeHandler}
-        />
-        <StyledButton type="submit">Add User</StyledButton>
-      </StyledForm>
-    </StyledCardUserInput>
+    <div>
+      <ErrorModal title="Error Occured!!" message="Something went wrong." />
+      <StyledCardUserInput>
+        <StyledForm onSubmit={addUserHandler}>
+          <label htmlFor="user-name">Username</label>
+          <input
+            id="user-name"
+            type="text"
+            value={enteredUserData.name}
+            onChange={userNameChangeHandler}
+          />
+          <label htmlFor="user-age">Age (years)</label>
+          <input
+            id="user-age"
+            type="number"
+            value={enteredUserData.age}
+            onChange={userAgeChangeHandler}
+          />
+          <StyledButton type="submit">Add User</StyledButton>
+        </StyledForm>
+      </StyledCardUserInput>
+    </div>
   );
 }
 
 export default AddUser;
+
+const StyledForm = styled.form`
+  & label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+  }
+
+  & input {
+    font: inherit;
+    display: block;
+    width: 100%;
+    border: 1px solid #ccc;
+    padding: 0.15rem;
+    margin-bottom: 0.5rem;
+  }
+
+  & input:focus {
+    outline: none;
+    border-color: #4f005f;
+  }
+`;
