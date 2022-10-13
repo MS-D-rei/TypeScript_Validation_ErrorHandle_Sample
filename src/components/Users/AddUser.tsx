@@ -3,6 +3,7 @@ import { StyledCardUserInput } from '@/components/UI/StyledCard';
 import styled from 'styled-components';
 import StyledButton from '@/components/UI/StyledButton';
 import ErrorModal from '@/components/UI/ErrorModal';
+import { ErrorAddUser } from '@/components/UI/types';
 
 function AddUser(props: { onNewUserSave: Function }) {
   // Use user object for less state as much as possible.
@@ -11,15 +12,25 @@ function AddUser(props: { onNewUserSave: Function }) {
     age: '',
   });
 
+  const [error, setError] = useState<ErrorAddUser>({title: '', message: ''});
+
   const addUserHandler = (event: React.FormEvent) => {
     event.preventDefault();
     if (
       enteredUserData.name.trim().length === 0 ||
       enteredUserData.age.trim().length === 0
     ) {
+      setError({
+        title: 'Invalid input',
+        message: 'Please enter a valid name and age (non-empty values).'
+      })
       return;
     }
-    if (+enteredUserData.age < 1) {
+    if (+enteredUserData.age < 0) {
+      setError({
+        title: 'Invalid age',
+        message: 'Plesae enter a age (>= 0)'
+      })
       return;
     }
     const newUserData = { id: `${Math.random()}`, ...enteredUserData };
@@ -44,9 +55,15 @@ function AddUser(props: { onNewUserSave: Function }) {
     }));
   };
 
+  const closeErrorModalHandler = () => {
+    setError({title: '', message: ''})
+  }
+  
+  const showError = error.title && <ErrorModal title={error.title} message={error.message} onClick={closeErrorModalHandler} />
+
   return (
     <div>
-      <ErrorModal title="Error Occured!!" message="Something went wrong." />
+      {showError}
       <StyledCardUserInput>
         <StyledForm onSubmit={addUserHandler}>
           <label htmlFor="user-name">Username</label>

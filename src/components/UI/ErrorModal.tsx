@@ -1,8 +1,13 @@
 import styled from 'styled-components';
 import { StyledCardBase } from '@/components/UI/StyledCard';
 import StyledButton from '@/components/UI/StyledButton';
+import { ErrorAddUser } from '@/components/UI/types';
 
-function ErrorModal(props: { title: string; message: string }) {
+function ErrorModal(props: { title: string, message: string, onClick: Function }) {
+  const closeErrorModalHandler = () => {
+    props.onClick();
+  }
+
   return (
     <div>
       <Backdrop />
@@ -14,7 +19,7 @@ function ErrorModal(props: { title: string; message: string }) {
           <p>{props.message}</p>
         </Content>
         <Footer>
-          <StyledButton>Okay</StyledButton>
+          <StyledButton onClick={closeErrorModalHandler}>Okay</StyledButton>
         </Footer>
       </StyledCardErrorModal>
     </div>
