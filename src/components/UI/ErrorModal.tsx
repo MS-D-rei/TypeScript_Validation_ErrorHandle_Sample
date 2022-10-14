@@ -1,28 +1,42 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 import { StyledCardBase } from '@/components/UI/StyledCard';
 import StyledButton from '@/components/UI/StyledButton';
-import Wrapper from '@/components/Helpers/Wrapper';
 
-function ErrorModal(props: { title: string, message: string, onClick: Function }) {
+const ModalOverlay = (props: {
+  title: string;
+  message: string;
+  onClick: Function;
+}) => {
   const closeErrorModalHandler = () => {
     props.onClick();
-  }
-
+  };
   return (
-    <Wrapper>
-      <Backdrop />
-      <StyledCardErrorModal>
-        <Header>
-          <Title>{props.title}</Title>
-        </Header>
-        <Content>
-          <p>{props.message}</p>
-        </Content>
-        <Footer>
-          <StyledButton onClick={closeErrorModalHandler}>Okay</StyledButton>
-        </Footer>
-      </StyledCardErrorModal>
-    </Wrapper>
+    <StyledCardErrorModal>
+      <Header>
+        <Title>{props.title}</Title>
+      </Header>
+      <Content>
+        <p>{props.message}</p>
+      </Content>
+      <Footer>
+        <StyledButton onClick={closeErrorModalHandler}>Okay</StyledButton>
+      </Footer>
+    </StyledCardErrorModal>
+  );
+};
+
+function ErrorModal(props: {
+  title: string;
+  message: string;
+  onClick: Function;
+}) {
+  return (
+    <React.Fragment>
+      {ReactDOM.createPortal(<Backdrop />, document.getElementById('backdrop-root') as HTMLElement)}
+      {ReactDOM.createPortal(<ModalOverlay title={props.title} message={props.message} onClick={props.onClick} />, document.getElementById('modal-root') as HTMLElement)}
+    </React.Fragment>
   );
 }
 
