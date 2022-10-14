@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { StyledCardBase } from '@/components/UI/StyledCard';
 import StyledButton from '@/components/UI/StyledButton';
-import { ErrorAddUser } from '@/components/UI/types';
+import Wrapper from '@/components/Helpers/Wrapper';
 
 function ErrorModal(props: { title: string, message: string, onClick: Function }) {
   const closeErrorModalHandler = () => {
@@ -9,7 +9,7 @@ function ErrorModal(props: { title: string, message: string, onClick: Function }
   }
 
   return (
-    <div>
+    <Wrapper>
       <Backdrop />
       <StyledCardErrorModal>
         <Header>
@@ -22,7 +22,7 @@ function ErrorModal(props: { title: string, message: string, onClick: Function }
           <StyledButton onClick={closeErrorModalHandler}>Okay</StyledButton>
         </Footer>
       </StyledCardErrorModal>
-    </div>
+    </Wrapper>
   );
 }
 

@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import StyledButton from '@/components/UI/StyledButton';
 import ErrorModal from '@/components/UI/ErrorModal';
 import { ErrorAddUser } from '@/components/UI/types';
+import Wrapper from '@/components/Helpers/Wrapper';
 
 function AddUser(props: { onNewUserSave: Function }) {
   // Use user object for less state as much as possible.
@@ -62,7 +63,7 @@ function AddUser(props: { onNewUserSave: Function }) {
   const showError = error.title && <ErrorModal title={error.title} message={error.message} onClick={closeErrorModalHandler} />
 
   return (
-    <div>
+    <Wrapper>
       {showError}
       <StyledCardUserInput>
         <StyledForm onSubmit={addUserHandler}>
@@ -83,7 +84,7 @@ function AddUser(props: { onNewUserSave: Function }) {
           <StyledButton type="submit">Add User</StyledButton>
         </StyledForm>
       </StyledCardUserInput>
-    </div>
+    </Wrapper>
   );
 }
 
