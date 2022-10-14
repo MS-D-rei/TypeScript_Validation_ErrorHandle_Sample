@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { StyledCardUserInput } from '@/components/UI/StyledCard';
 import styled from 'styled-components';
 import StyledButton from '@/components/UI/StyledButton';
@@ -12,25 +12,31 @@ function AddUser(props: { onNewUserSave: Function }) {
     age: '',
   });
 
-  const [error, setError] = useState<ErrorAddUser>({title: '', message: ''});
+  const [error, setError] = useState<ErrorAddUser>({ title: '', message: '' });
+
+  // const nameInputRef = useRef() as React.MutableRefObject<HTMLInputElement>;
+  const nameInputRef = useRef(null);
+  // const ageInputRef = useRef() as React.MutableRefObject<HTMLInputElement>;
+  const ageInputRef = useRef(null);
 
   const addUserHandler = (event: React.FormEvent) => {
     event.preventDefault();
+    console.log(nameInputRef);
     if (
       enteredUserData.name.trim().length === 0 ||
       enteredUserData.age.trim().length === 0
     ) {
       setError({
         title: 'Invalid input',
-        message: 'Please enter a valid name and age (non-empty values).'
-      })
+        message: 'Please enter a valid name and age (non-empty values).',
+      });
       return;
     }
     if (+enteredUserData.age < 0) {
       setError({
         title: 'Invalid age',
-        message: 'Plesae enter a age (>= 0)'
-      })
+        message: 'Plesae enter a age (>= 0)',
+      });
       return;
     }
     const newUserData = { id: `${Math.random()}`, ...enteredUserData };
@@ -56,10 +62,16 @@ function AddUser(props: { onNewUserSave: Function }) {
   };
 
   const closeErrorModalHandler = () => {
-    setError({title: '', message: ''})
-  }
-  
-  const showError = error.title && <ErrorModal title={error.title} message={error.message} onClick={closeErrorModalHandler} />
+    setError({ title: '', message: '' });
+  };
+
+  const showError = error.title && (
+    <ErrorModal
+      title={error.title}
+      message={error.message}
+      onClick={closeErrorModalHandler}
+    />
+  );
 
   return (
     <React.Fragment>
@@ -72,6 +84,7 @@ function AddUser(props: { onNewUserSave: Function }) {
             type="text"
             value={enteredUserData.name}
             onChange={userNameChangeHandler}
+            ref={nameInputRef}
           />
           <label htmlFor="user-age">Age (years)</label>
           <input
@@ -79,6 +92,7 @@ function AddUser(props: { onNewUserSave: Function }) {
             type="number"
             value={enteredUserData.age}
             onChange={userAgeChangeHandler}
+            ref={ageInputRef}
           />
           <StyledButton type="submit">Add User</StyledButton>
         </StyledForm>
